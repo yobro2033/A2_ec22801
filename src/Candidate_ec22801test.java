@@ -247,7 +247,6 @@ public class Candidate_ec22801test {
         }
     }
 
-
     public String validateInput(String input) {
         if (input.equals("y") || input.equals("n")) {
             return input;
