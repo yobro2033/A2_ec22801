@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.Scanner;
 
 public class Candidate_ec22801test {
     interface Person {
@@ -7,27 +8,29 @@ public class Candidate_ec22801test {
 
     interface Citizen extends Person {
         Candidate vote(Candidate[] candidates);
+
         Candidate selectWinner(Candidate[] votes);
-    } 
+    }
 
     interface Electable {
         String getSlogan();
     }
 
-    abstract class Candidate implements Citizen, Electable { }
+    abstract class Candidate implements Citizen, Electable {
+    }
 
     class Candidate_ac1234 extends Candidate {
-        
+
         public String getName() {
             return "Robin";
         }
-        
+
         public String getSlogan() {
             return "More trees!";
         }
-        
+
         public Candidate vote(Candidate[] candidates) {
-            
+
             // If array is empty, return instance of friend's class.
             if (candidates.length == 0) {
                 // Randomly choose between three options.
@@ -41,34 +44,36 @@ public class Candidate_ec22801test {
                     return new Candidate_ac1236();
             }
 
+            Candidate slogans = randomPosition(candidates);
             // Search for a like minded candidate.
             for (Candidate c : candidates)
-                if (c.getSlogan().equals(randomPosition(candidates).getSlogan()))
+                if (c.getSlogan().equals(slogans.getSlogan()))
                     return c;
-            
+
+            Candidate friends = randomPosition(candidates);
             // Otherwise, search for a friend.
             for (Candidate c : candidates)
-                if (c.getName().equals(randomPosition(candidates).getName()))
+                if (c.getName().equals(friends.getName()))
                     return c;
-            
+
             // Otherwise, default to last candidate on list.
-            return candidates[candidates.length-1];
+            return candidates[candidates.length - 1];
         }
-        
+
         public Candidate selectWinner(Candidate[] votes) {
-            
+
             // If array is empty, return instance of friend's class.
-            if (votes.length == 0) 
+            if (votes.length == 0)
                 return new Candidate_ac1235();
-            
+
             // Default to first vote, but this will be over-written.
             Candidate currentWinner = votes[0];
-            
+
             // Count the votes for each object in the array,
             // selecting one with the most.
             int highestCount = 0;
             for (Candidate c : votes) {
-                
+
                 int count = 0;
                 for (Candidate x : votes)
                     if (x == c)
@@ -78,55 +83,59 @@ public class Candidate_ec22801test {
                     currentWinner = c;
                 }
             }
-            
+
             return currentWinner;
         }
-        
+
     }
 
     class Candidate_ac1235 extends Candidate {
-        
+
         public String getName() {
             return "Kim";
         }
-        
+
         public String getSlogan() {
             return "More fields!";
         }
-        
+
         public Candidate vote(Candidate[] candidates) {
-            
+
             // If array is empty, return instance of this class.
-            if (candidates.length == 0) 
+            if (candidates.length == 0)
                 return new Candidate_ac1235();
-            
+
             // First search for Utfur on the list of candidates.
+            Candidate friends = randomPosition(candidates);
+            Candidate firstSlogan = randomPosition(candidates);
+            Candidate secondSlogan = randomPosition(candidates);
+
             for (Candidate c : candidates)
-                if (c.getName().equals(randomPosition(candidates).getName())) {
+                if (c.getName().equals(friends.getName())) {
                     return c;
-                } else if (c.getSlogan().equals(randomPosition(candidates).getSlogan())) {
+                } else if (c.getSlogan().equals(firstSlogan.getSlogan())) {
                     return c;
-                } else if (c.getSlogan().equals(randomPosition(candidates).getSlogan())) {
+                } else if (c.getSlogan().equals(secondSlogan.getSlogan())) {
                     return c;
                 }
-                
-            return randomPosition(candidates); 
+
+            return randomPosition(candidates);
         }
-        
+
         public Candidate selectWinner(Candidate[] votes) {
-            
+
             // If array is empty, return instance of this class.
-            if (votes.length == 0) 
+            if (votes.length == 0)
                 return new Candidate_ac1235();
-            
+
             // Default to first vote, but this will be over-written.
             Candidate currentWinner = votes[0];
-            
+
             // Count the votes for each object in the array,
             // selecting one with the most.
             int highestCount = 0;
             for (Candidate c : votes) {
-                
+
                 int count = 0;
                 for (Candidate x : votes)
                     if (x == c)
@@ -143,34 +152,34 @@ public class Candidate_ec22801test {
                     }
                 }
             }
-            
+
             return currentWinner;
         }
-        
+
     }
 
     class Candidate_ac1236 extends Candidate {
-    
+
         public String getName() {
             return "Arbor";
         }
-        
+
         public String getSlogan() {
             return "More me!";
         }
-        
+
         public Candidate vote(Candidate[] candidates) {
-            
+
             // First search for self on the list of candidates.
             for (Candidate c : candidates)
-                if (c.getName().equals(randomPosition(candidates).getName()))
+                if (c.getName().equals(this.getName()))
                     return c;
-            
+
             return randomPosition(candidates);
         }
-        
+
         public Candidate selectWinner(Candidate[] votesCast) {
-            
+
             // If array is empty, return instance of this class.
             if (votesCast.length == 0) {
                 Random r = new Random();
@@ -180,15 +189,15 @@ public class Candidate_ec22801test {
                 else
                     return new Candidate_ac1235();
             }
-            
+
             // Default to first vote, but this will be over-written.
             Candidate currentWinner = votesCast[0];
-            
+
             // Count the votes for each object in the array,
             // selecting one with the most.
             int highestCount = 0;
             for (Candidate c : votesCast) {
-                
+
                 int count = 0;
                 for (Candidate x : votesCast)
                     if (x == c)
@@ -218,53 +227,111 @@ public class Candidate_ec22801test {
             return currentWinner;
         }
     }
-    
-    public Candidate randomPosition (Candidate[] candidates) {
+
+    public Candidate randomPosition(Candidate[] candidates) {
         Random r = new Random();
         int randomPos = r.nextInt(candidates.length);
         return candidates[randomPos];
     }
 
+    public void displayCandidates(Candidate[] candidates) {
+        for (int i = 0; i < candidates.length; i++) {
+            System.out.println("[" + i + "] Candidate: " + candidates[i].getName() + ", slogan for the campaign: "
+                    + candidates[i].getSlogan());
+        }
+    }
+
     public void run(String[] args) throws Exception {
+
         // Make up list of candidates to pass to vote methods.
         Candidate[] listOfCandidates = new Candidate[3];
         listOfCandidates[0] = new Candidate_ac1234();
         listOfCandidates[1] = new Candidate_ac1235();
         listOfCandidates[2] = new Candidate_ac1236();
-        
+
         // Compile list of citzens.
         Citizen[] voters = new Citizen[3];
         voters[0] = new Candidate_ac1234();
         voters[1] = new Candidate_ac1235();
         voters[2] = new Candidate_ac1236();
-        
+
         // Ask all voters to vote.
         Candidate[] ballotBox = new Candidate[voters.length];
-        for (int i=0;i<voters.length;i++) {
-            Candidate v = voters[i].vote(listOfCandidates);
-            System.out.println(voters[i].getName() +" voted for " + v.getName() +
-                              ", whose slogan is '" + v .getSlogan() + "'.");
-            ballotBox[i] = v;
+        // Ask if voters wish to display the list of candidates.
+        System.out.println("Do you wish to display the list of candidates? (y/n)");
+        Scanner sc = new Scanner(System.in);
+        String input = sc.nextLine();
+        if (input.equals("y")) {
+            displayCandidates(listOfCandidates);
         }
-        
+
+        String[] votersVoted = new String[voters.length];
+
+        for (int i = 0; i < voters.length; i++) {
+            // Ask voter's name.
+            boolean nextVote = true;
+            while (nextVote) {
+                boolean isVoted = false;
+                System.out.print("What is your name? ");
+                String name = sc.nextLine();
+                System.out.println("Hello " + name + "!");
+                // Check if voter have voted before.
+                for (int j = 0; j < votersVoted.length; j++) {
+                    // Get voters in ballot box. If it's null then skip.
+                    String votersInBallot = votersVoted[j];
+                    if (votersInBallot == null) {
+                        continue;
+                    } else if (votersInBallot.equals(name)) {
+                        System.out.println("You have voted before!");
+                        isVoted = true;
+                        break;
+                    }
+                }
+                if (isVoted) {
+                    nextVote = true;
+                } else {
+                    // Check if voter's name is in the list of candidates and return position.
+                    int position = -1;
+                    for (int j = 0; j < listOfCandidates.length; j++) {
+                        if (listOfCandidates[j].getName().equals(name)) {
+                            position = j;
+                            break;
+                        }
+                    }
+                    // If voter's name is not in the list of candidates, ask for another name.
+                    if (position == -1) {
+                        System.out.println("Your name is not in the list of voters!");
+                        continue;
+                    } else {
+                        Candidate v = voters[i].vote(listOfCandidates);
+                        System.out.println(voters[position].getName() + " voted for " + v.getName() +
+                                ", whose slogan is '" + v.getSlogan() + "'.");
+                        ballotBox[i] = v;
+                        // Add voter's name to the list of voters voted.
+                        votersVoted[i] = name;
+                        nextVote = false;
+                        break;
+                    }
+                }
+            }
+        }
+        sc.close();
+
         // Ask all voters to count the votes.
-        for (int i=0;i<voters.length;i++) {
+        for (int i = 0; i < voters.length; i++) {
             Person winner = voters[i].selectWinner(ballotBox);
-            System.out.println(voters[i].getName() +" says " + winner.getName() +
-                              " wins the election.");
+            System.out.println(voters[i].getName() + " says " + winner.getName() +
+                    " wins the election.");
         }
-        
+
     }
 
     public static void main(String[] args) throws Exception {
-        try
-        {
-            Candidate_ec22801 obj = new Candidate_ec22801 ();
-            obj.run (args);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace ();
+        try {
+            Candidate_ec22801test obj = new Candidate_ec22801test();
+            obj.run(args);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
