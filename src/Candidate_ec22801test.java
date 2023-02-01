@@ -241,6 +241,36 @@ public class Candidate_ec22801test {
         }
     }
 
+    public void displayVoters(Citizen[] voters) {
+        for (int i = 0; i < voters.length; i++) {
+            System.out.println("[" + i + "] Voter: " + voters[i].getName());
+        }
+    }
+
+
+    public String validateInput(String input) {
+        if (input.equals("y") || input.equals("n")) {
+            return input;
+        } else {
+            System.out.println("Invalid input. Please enter y or n.");
+            Scanner sc = new Scanner(System.in);
+            input = sc.nextLine();
+            return validateInput(input);
+        }
+    }
+
+    public int validateIntInput(int input) {
+        int max = 3;
+        if (input >= 0 && input < max) {
+            return input;
+        } else {
+            System.out.println("Invalid input. Please enter a number between 0 and " + (max - 1) + ".");
+            Scanner sc = new Scanner(System.in);
+            input = sc.nextInt();
+            return validateIntInput(input);
+        }
+    }
+
     public void run(String[] args) throws Exception {
 
         // Make up list of candidates to pass to vote methods.
@@ -261,6 +291,7 @@ public class Candidate_ec22801test {
         System.out.println("Do you wish to display the list of candidates? (y/n)");
         Scanner sc = new Scanner(System.in);
         String input = sc.nextLine();
+        input = validateInput(input); // Remove this line if you don't want to validate input.
         if (input.equals("y")) {
             displayCandidates(listOfCandidates);
         }
@@ -315,14 +346,36 @@ public class Candidate_ec22801test {
                 }
             }
         }
-        sc.close();
 
+        // Ask voters whose select winners they want to see
+        System.out.println("Do you want to see the winner selected by each voter? (y/n)");
+        input = sc.nextLine();
+        input = validateInput(input); // Remove this line if you don't want to validate input.
+        if (input.equals("y")) {
+            for (int i = 0; i < voters.length; i++) {
+                Person winner = voters[i].selectWinner(ballotBox);
+                System.out.println(voters[i].getName() + " says " + winner.getName() +
+                        " wins the election.");
+            }
+        } else {
+            System.out.println("Whose opinion do you want to see?");
+            displayVoters(voters);
+            System.out.print("Enter the number of the voter: ");
+            int voterNumber = sc.nextInt();
+            voterNumber = validateIntInput(voterNumber); // Remove this line if you don't want to validate input.
+            Person winner = voters[voterNumber].selectWinner(ballotBox);
+            System.out.println(voters[voterNumber].getName() + " says " + winner.getName() +
+                    " wins the election.");
+        }
+        
         // Ask all voters to count the votes.
-        for (int i = 0; i < voters.length; i++) {
+        /*for (int i = 0; i < voters.length; i++) {
             Person winner = voters[i].selectWinner(ballotBox);
             System.out.println(voters[i].getName() + " says " + winner.getName() +
                     " wins the election.");
-        }
+        }*/
+
+        sc.close();
 
     }
 
